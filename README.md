@@ -65,8 +65,11 @@ $fields will not be validated.
 --- 
 
 #### `passes() : bool`
+
 #### `fails() : bool`
+
 #### `validate() : array | throw ValidationException`
+
 #### `validated() : array |  throw ValidationException`
 
 #### BooksValidator
