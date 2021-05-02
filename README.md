@@ -41,14 +41,23 @@ validator
 ### method
 
 #### `with(array $data) : self`
+
 data to deal with.
+
 ---  
+
 #### `required(...$fields) : self`
+
 fields in params list add `required`
+
 --- 
+
 #### `only(...$fields) : self:
+
 only fields can be validated.
+
 --- 
+
 #### `exclude(...$field) : self`
 $fields will not be validated.
 --- 
