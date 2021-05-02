@@ -30,22 +30,28 @@ make:gs-model-validator Models/Book
 validator 
 
 ### rule
-- all table field validation type : string, numeric, etc.
+- all table field 
+- validation type : string, numeric, etc.
 - string(length:50): `max:50`
 - auto increment: `min:1`   
 - `nullable`
 - not `required`
+- self define
 
 ### method
 
 #### `with(array $data) : self`
 data to deal with.
+---  
 #### `required(...$fields) : self`
-fields in params list add `required` 
+fields in params list add `required`
+--- 
 #### `only(...$fields) : self:
 only fields can be validated.
+--- 
 #### `exclude(...$field) : self`
 $fields will not be validated.
+--- 
 #### `passes() : bool`
 #### `fails() : bool`
 #### `validate() : array | throw ValidationException`
