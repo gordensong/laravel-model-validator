@@ -1,5 +1,5 @@
 {
-    "name": "gordensong/laravel_model_validator",
+    "name": "gordensong/laravel-model-validator",
     "description": "Generate Laravel model or table validator from your existing models or tables",
     "keywords": ["Laravel", "Model", "Validator"],
     "license": "Apache-2.0",
