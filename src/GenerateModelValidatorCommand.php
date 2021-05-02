@@ -21,7 +21,7 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 	 *
 	 * @var string
 	 */
-	protected $name = 'gs-make:model-validator {model*}';
+	protected $name = 'make:gs-model-validator {model*}';
 
 	/**
 	 * @var string
