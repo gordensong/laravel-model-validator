@@ -35,7 +35,7 @@ class LaravelModelValidatorServiceProvider extends ServiceProvider
 		$this->commands('command.model-validator-helper.generate');
 		$this->commands('command.table-validator-helper.generate');
 
-		ModelValidator::setValidatorFactory(app()->make(Factory::class));
+		ModelValidator::setValidatorFactory($this->app->make(Factory::class));
 	}
 
 	/**
