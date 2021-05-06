@@ -1,6 +1,6 @@
 namespace App\Validators;
 
-class {{$name}}Validator extends ModelValidator
+class {{$name}}Validator extends \GordenSong\ModelValidator
 {
     protected $rules = [
 @foreach($rules as $field => $rule)
