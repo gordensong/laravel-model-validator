@@ -1,10 +1,14 @@
 <?php
 
-namespace GordenSong;
+namespace GordenSong\Providers;
 
+use GordenSong\Console\Command\GenerateModelValidatorCommand;
+use GordenSong\Console\Command\GenerateTableValidatorCommand;
+use GordenSong\ModelValidator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Factory;
 
-class ModelValidatorHelperServiceProvider extends ServiceProvider
+class LaravelModelValidatorServiceProvider extends ServiceProvider
 {
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -30,6 +34,8 @@ class ModelValidatorHelperServiceProvider extends ServiceProvider
 
 		$this->commands('command.model-validator-helper.generate');
 		$this->commands('command.table-validator-helper.generate');
+
+		ModelValidator::setValidatorFactory(app()->make(Factory::class));
 	}
 
 	/**
@@ -37,7 +43,7 @@ class ModelValidatorHelperServiceProvider extends ServiceProvider
 	 *
 	 * @return array
 	 */
-	public function provides()
+	public function provides(): array
 	{
 		return [
 			'command.model-validator-helper.generate',

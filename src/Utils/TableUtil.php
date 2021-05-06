@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GordenSong;
+namespace GordenSong\Utils;
 
 
 use Doctrine\DBAL\Schema\Table;

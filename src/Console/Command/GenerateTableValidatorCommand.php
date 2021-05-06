@@ -1,7 +1,10 @@
 <?php
 
-namespace GordenSong;
+namespace GordenSong\Console\Command;
 
+use GordenSong\Utils\ModelValidatorMeta;
+use GordenSong\Utils\TableUtil;
+use GordenSong\Utils\ViewUtil;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -75,8 +78,8 @@ class GenerateTableValidatorCommand extends \Illuminate\Console\Command
 
 		$tables = $this->argument('table');
 
-		foreach ($tables as $model) {
-			$filename = 'app/Validators/' . Str::studly($model) . 'Validator.php';
+		foreach ($tables as $table) {
+			$filename = 'app/Validators/' . Str::studly($table) . 'Validator.php';
 			$filename = base_path($filename);
 
 			if ($this->files->exists($filename) && !$this->force) {
@@ -84,7 +87,7 @@ class GenerateTableValidatorCommand extends \Illuminate\Console\Command
 				continue;
 			}
 
-			$result = $this->generateModelValidator($model);
+			$result = $this->generateModelValidator($table);
 			if ($result === false) {
 				continue;
 			}
@@ -146,43 +149,9 @@ class GenerateTableValidatorCommand extends \Illuminate\Console\Command
 	{
 		$output = '<?php' . "\n\n";
 		$output .= $this->view
-			->file(__DIR__ . '/model-validator.blade.php', $validatorMeta->toArray())
+			->file(ViewUtil::getModelValidatorBladePath(), $validatorMeta->toArray())
 			->render();
 
 		return $output;
-	}
-
-	/**
-	 * @param array|string[] $models
-	 * @return array|array[]|string[]|\string[][]
-	 */
-	protected function loadModels($models = []): array
-	{
-		if (!empty($models)) {
-			return array_map(function ($name) {
-				if (strpos($name, '\\') !== false) {
-					return $name;
-				}
-
-				return str_replace(
-					[DIRECTORY_SEPARATOR, basename($this->laravel->path()) . '\\'],
-					['\\', $this->laravel->getNamespace()],
-					$this->dir . DIRECTORY_SEPARATOR . $name
-				);
-			}, $models);
-		}
-
-		$dir = base_path($this->dir);
-		if (!file_exists($dir)) {
-			return [];
-		}
-
-		return array_map(function (\SplFIleInfo $file) {
-			return str_replace(
-				[DIRECTORY_SEPARATOR, basename($this->laravel->path()) . '\\'],
-				['\\', $this->laravel->getNamespace()],
-				$file->getPath() . DIRECTORY_SEPARATOR . basename($file->getFilename(), '.php')
-			);
-		}, $this->files->allFiles($this->dir));
 	}
 }

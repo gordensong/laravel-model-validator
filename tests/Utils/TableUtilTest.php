@@ -1,14 +1,23 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Utils;
 
 use Doctrine\DBAL\Schema\Table;
-use GordenSong\TableUtil;
+use GordenSong\Utils\TableUtil;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\Models\Card;
 use Tests\TestCase;
 
 class TableUtilTest extends TestCase
 {
+	use RefreshDatabase;
+
+	public function test_migration()
+	{
+		self::assertTrue(Schema::hasTable('card'));
+	}
+
 	public function test_load()
 	{
 		$table = TableUtil::load('card');

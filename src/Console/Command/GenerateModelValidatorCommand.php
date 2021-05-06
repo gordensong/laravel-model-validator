@@ -1,15 +1,21 @@
 <?php
 
-namespace GordenSong;
+namespace GordenSong\Console\Command;
 
+use Exception;
+use GordenSong\Utils\ModelValidatorMeta;
+use GordenSong\Utils\TableUtil;
+use GordenSong\Utils\ViewUtil;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Filesystem\Filesystem;
 use ReflectionClass;
+use SplFIleInfo;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateModelValidatorCommand extends \Illuminate\Console\Command
+class GenerateModelValidatorCommand extends Command
 {
 	/**
 	 * @var Filesystem $files
@@ -130,7 +136,7 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 		if (!class_exists($model)) {
 			if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
 				$this->error("Unable to find '$model' class");
-			} else{
+			} else {
 				$this->error("Unable to find '$model' class");
 			}
 			return false;
@@ -160,7 +166,7 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 			$meta = ModelValidatorMeta::make($table, $model);
 
 			return $this->createModelValidator($meta);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->error("Exception: " . $e->getMessage() . "\nCould not analyze class $model.");
 			return false;
 		}
@@ -174,7 +180,7 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 	{
 		$output = '<?php' . "\n\n";
 		$output .= $this->view
-			->file(__DIR__ . '/model-validator.blade.php', $validatorMeta->toArray())
+			->file(ViewUtil::getModelValidatorBladePath(), $validatorMeta->toArray())
 			->render();
 
 		return $output;
@@ -182,9 +188,9 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 
 	/**
 	 * @param array|string[] $models
-	 * @return array|array[]|string[]|\string[][]
+	 * @return array|array[]|string[]|string[][]
 	 */
-	protected function loadModels($models = []): array
+	protected function loadModels(array $models = []): array
 	{
 		if (!empty($models)) {
 			return array_map(function ($name) {
@@ -205,7 +211,7 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 			return [];
 		}
 
-		return array_map(function (\SplFIleInfo $file) {
+		return array_map(function (SplFIleInfo $file) {
 			return str_replace(
 				[DIRECTORY_SEPARATOR, basename($this->laravel->path()) . '\\'],
 				['\\', $this->laravel->getNamespace()],
