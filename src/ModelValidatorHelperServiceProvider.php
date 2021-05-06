@@ -24,7 +24,12 @@ class ModelValidatorHelperServiceProvider extends ServiceProvider
 			return new GenerateModelValidatorCommand($app['files'], $app['view']);
 		});
 
+		$this->app->bind('command.table-validator-helper.generate', function ($app) {
+			return new GenerateTableValidatorCommand($app['files'], $app['view']);
+		});
+
 		$this->commands('command.model-validator-helper.generate');
+		$this->commands('command.table-validator-helper.generate');
 	}
 
 	/**
@@ -34,7 +39,10 @@ class ModelValidatorHelperServiceProvider extends ServiceProvider
 	 */
 	public function provides()
 	{
-		return array('command.model-validator-helper.generate');
+		return [
+			'command.model-validator-helper.generate',
+			'command.table-validator-helper.generate'
+		];
 	}
 
 }
