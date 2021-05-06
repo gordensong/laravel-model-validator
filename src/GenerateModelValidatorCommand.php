@@ -73,12 +73,14 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 	{
 		$this->dir = $this->option('dir');
 		$this->force = $this->option('force');
-		$models = $this->argument('model');
 
+		$models = $this->argument('model');
 		$models = $this->loadModels($models);
 
 		foreach ($models as $model) {
-			$filename = 'app/Validatores/' . class_basename($model) . 'Validator.php';
+			$filename = 'app/Validators/' . class_basename($model) . 'Validator.php';
+			$filename = base_path($filename);
+
 			if ($this->files->exists($filename) && !$this->force) {
 				$this->line('<fg=yellow>Model validator exists, use --force to overwrite:</fg=yellow> ' . $filename);
 				continue;
@@ -97,7 +99,6 @@ class GenerateModelValidatorCommand extends \Illuminate\Console\Command
 			}
 		}
 	}
-
 
 	/**
 	 * Get the console command arguments.
